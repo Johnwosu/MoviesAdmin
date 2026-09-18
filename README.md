@@ -1,16 +1,16 @@
 # MoviesAdmin
 
-MoviesAdmin is the administration component of a movie-review website that I am building for my Web Application Programming course at NSCC. The complete system will be developed individually over four project sprints and will work similarly to websites such as Rotten Tomatoes.
+MoviesAdmin is the administration component of a movie review website that I am building for my Web Application Programming course at NSCC. The complete system will be developed individually over four project sprints and will work similarly to websites such as Rotten Tomatoes.
 
 ## Project overview
 
 Sprint 1 focuses on building the administration side of the system. The application will allow an administrator to manage the movie information stored in the database.
 
-Starting with the administration component will help establish the database structure and CRUD operations required by the larger system. Later project sprints will add movie-review features for critics and a public-facing website where visitors can browse movies and read reviews.
+Starting with the administration component will help establish the database structure and CRUD operations required by the larger system. Later project sprints will add movie review features for critics and a public facing website where visitors can browse movies and read reviews.
 
 ## Sprint 1 objectives
 
-The main objective of Sprint 1 is to build a functional movie-management application. An administrator will be able to:
+The main objective of Sprint 1 is to build a functional movie management application from the administrator standpoint. An administrator will be able to:
 
 - Add a new movie
 - View the details of a movie
@@ -34,7 +34,7 @@ Each movie record will contain the following information:
 
 ## Design
 
-The application will use clear navigation and consistent styling to make movie management straightforward. It will also include its own visual identity so that the administration interface fits the branding of the larger movie-review system.
+The application will use clear navigation and consistent styling to make movie management straightforward. It will also include its own visual identity so that the administration interface fits the branding of the larger movie review system.
 
 ## Technologies
 
@@ -53,11 +53,11 @@ SQL Server will run inside a Docker container, while Entity Framework Core will 
 
 ## Current progress
 
-The initial ASP.NET Core MVC project has been created and tested successfully on macOS. The application currently runs locally, and the database integration and movie-management functionality will be developed during Sprint 1.
+The initial ASP.NET Core MVC project has been created and tested successfully on macOS. The application currently runs locally, and the database integration and movie management functionality will be developed during Sprint 1.
 
 ## Project development
 
-The complete movie-review system will be developed over four project sprints:
+The complete movie review system will be developed over four project sprints:
 
 1. **Movie administration:** Manage movie records and database operations.
 2. **Critic functionality:** Allow critics to create and manage movie reviews.
