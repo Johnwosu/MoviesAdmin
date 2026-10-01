@@ -1,0 +1,65 @@
+@* Styling uses Bootstrap: https://getbootstrap.com/ *@
+
+@model MoviesAdmin.Models.Movie
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>@Model.Title</h1>
+
+@* Bootstrap's text-muted class styles this movie summary.
+   Reference: https://getbootstrap.com/docs/5.3/utilities/colors/ *@
+<p class="text-muted">
+    @Model.Rating · @Model.Genre ·
+    @(Model.RuntimeMinutes / 60)h @(Model.RuntimeMinutes % 60)m
+</p>
+
+<h2 class="h4">Synopsis</h2>
+<p>@Model.Synopsis</p>
+
+@* Display the remaining information for this movie. *@
+<dl class="row">
+    <dt class="col-sm-3">Director</dt>
+    <dd class="col-sm-9">@Model.Director</dd>
+
+    <dt class="col-sm-3">Producer</dt>
+    <dd class="col-sm-9">@Model.Producer</dd>
+
+    <dt class="col-sm-3">Screenwriter</dt>
+    <dd class="col-sm-9">@Model.Screenwriter</dd>
+
+    <dt class="col-sm-3">Distributor</dt>
+    <dd class="col-sm-9">@Model.Distributor</dd>
+
+    <dt class="col-sm-3">Production company</dt>
+    <dd class="col-sm-9">@Model.ProductionCompany</dd>
+
+    <dt class="col-sm-3">Original language</dt>
+    <dd class="col-sm-9">@Model.OriginalLanguage</dd>
+
+    <dt class="col-sm-3">Theatre release</dt>
+    <dd class="col-sm-9">
+        @Model.TheaterReleaseDate.ToString("MMM d, yyyy")
+    </dd>
+
+    <dt class="col-sm-3">Streaming release</dt>
+    <dd class="col-sm-9">
+        @(Model.StreamingReleaseDate?.ToString("MMM d, yyyy") ?? "Not available")
+    </dd>
+
+    <dt class="col-sm-3">Sound mix</dt>
+    <dd class="col-sm-9">@Model.SoundMix</dd>
+
+    <dt class="col-sm-3">Aspect ratio</dt>
+    <dd class="col-sm-9">@Model.AspectRatio</dd>
+
+    <dt class="col-sm-3">Image filename</dt>
+    <dd class="col-sm-9">@Model.ImageFilename</dd>
+</dl>
+
+@* Include the movie ID when opening its Edit page. *@
+<a asp-action="Edit" asp-route-id="@Model.Id"
+   class="btn btn-primary">Edit Movie</a>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Movies</a>
