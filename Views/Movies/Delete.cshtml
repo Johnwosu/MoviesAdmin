@@ -1,0 +1,34 @@
+@model MoviesAdmin.Models.Movie
+
+@{
+    ViewData["Title"] = "Delete Movie";
+}
+
+<h1>Delete Movie</h1>
+
+@* Ask for confirmation before removing the movie. *@
+<div class="alert alert-danger">  @*Displays warning in red *@
+    Are you sure you want to delete <strong>@Model.Title</strong>?
+    This action cannot be undone.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Title</dt>
+    <dd class="col-sm-9">@Model.Title</dd>
+
+    <dt class="col-sm-3">Genre</dt>
+    <dd class="col-sm-9">@Model.Genre</dd>
+
+    <dt class="col-sm-3">Theatre release</dt>
+    <dd class="col-sm-9">
+        @Model.TheaterReleaseDate.ToString("MMM d, yyyy")
+    </dd>
+</dl>
+
+@* Submit the movie ID to the controller's Delete POST action. *@
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">Delete Movie</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
