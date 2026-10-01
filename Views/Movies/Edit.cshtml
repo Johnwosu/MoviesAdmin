@@ -1,0 +1,121 @@
+@model MoviesAdmin.Models.Movie
+
+@{
+    ViewData["Title"] = "Edit Movie";
+}
+
+<h1>Edit Movie</h1>
+
+@* Submit the changes for this movie's ID. *@
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    @* Show all validation errors. *@
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @* asp-for connects each field to the Movie model. *@
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Synopsis" class="form-label"></label>
+        <textarea asp-for="Synopsis" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Synopsis" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Genre" class="form-label"></label>
+        <input asp-for="Genre" class="form-control" />
+        <span asp-validation-for="Genre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Rating" class="form-label"></label>
+        <input asp-for="Rating" class="form-control"
+               placeholder="For example, PG-13" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RuntimeMinutes" class="form-label"></label>
+        <input asp-for="RuntimeMinutes" class="form-control" />
+        <span asp-validation-for="RuntimeMinutes" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TheaterReleaseDate" class="form-label"></label>
+        <input asp-for="TheaterReleaseDate" class="form-control" />
+        <span asp-validation-for="TheaterReleaseDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StreamingReleaseDate" class="form-label"></label>
+        <input asp-for="StreamingReleaseDate" class="form-control" />
+        <span asp-validation-for="StreamingReleaseDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Director" class="form-label"></label>
+        <input asp-for="Director" class="form-control" />
+        <span asp-validation-for="Director" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Producer" class="form-label"></label>
+        <input asp-for="Producer" class="form-control" />
+        <span asp-validation-for="Producer" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Screenwriter" class="form-label"></label>
+        <input asp-for="Screenwriter" class="form-control" />
+        <span asp-validation-for="Screenwriter" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Distributor" class="form-label"></label>
+        <input asp-for="Distributor" class="form-control" />
+        <span asp-validation-for="Distributor" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProductionCompany" class="form-label"></label>
+        <input asp-for="ProductionCompany" class="form-control" />
+        <span asp-validation-for="ProductionCompany" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="OriginalLanguage" class="form-label"></label>
+        <input asp-for="OriginalLanguage" class="form-control" />
+        <span asp-validation-for="OriginalLanguage" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SoundMix" class="form-label"></label>
+        <input asp-for="SoundMix" class="form-control" />
+        <span asp-validation-for="SoundMix" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AspectRatio" class="form-label"></label>
+        <input asp-for="AspectRatio" class="form-control" />
+        <span asp-validation-for="AspectRatio" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImageFilename" class="form-label"></label>
+        <input asp-for="ImageFilename" class="form-control" />
+        <span asp-validation-for="ImageFilename" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to Movies</a>
+</form>
+
+@* Enable validation in the browser. *@
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
