@@ -9,13 +9,13 @@ public class MoviesController : Controller
 {
     private readonly MoviesAdminContext _context;
 
-    // ASP.NET Core supplies the database context to this controller.
+    // ASP.NET Core supplies the database context.
     public MoviesController(MoviesAdminContext context)
     {
         _context = context;
     }
 
-    // GET /Movies: retrieve all movies, newest release first.
+    // Show all movies, newest release first.
     public async Task<IActionResult> Index()
     {
         var movies = await _context.Movies
@@ -25,28 +25,118 @@ public class MoviesController : Controller
         return View(movies);
     }
 
-    // GET /Movies/Create: show the empty Create form.
+    // Show the empty Create form.
     public IActionResult Create()
     {
         return View();
     }
 
-    // POST /Movies/Create: receive and save the submitted form.
+    // Validate and save a new movie.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Movie movie)
     {
-        // If validation fails, show the form again with its errors.
         if (!ModelState.IsValid)
         {
             return View(movie);
         }
 
-        // Add the movie to the context, then save it to SQL Server.
+        // SQL Server generates the new movie's ID.
+        movie.Id = 0;
+
         _context.Movies.Add(movie);
         await _context.SaveChangesAsync();
 
-        // Return to the movie list after saving.
+        return RedirectToAction(nameof(Index));
+    }
+
+    // Find a movie by its ID and show its details.
+    public async Task<IActionResult> Details(int id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+
+        // Return 404 if the movie does not exist.
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        return View(movie);
+    }
+
+    // Fill the Edit form with the movie's current values.
+    public async Task<IActionResult> Edit(int id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        return View(movie);
+    }
+
+    // Validate and save the submitted changes.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, Movie movie)
+    {
+        // Check that the URL and form identify the same movie.
+        if (id != movie.Id)
+        {
+            return BadRequest();
+        }
+
+        // Keep the submitted values when validation fails.
+        if (!ModelState.IsValid)
+        {
+            return View(movie);
+        }
+
+        var existingMovie = await _context.Movies.FindAsync(id);
+
+        if (existingMovie == null)
+        {
+            return NotFound();
+        }
+
+        // Copy the form values into the existing database record.
+        _context.Entry(existingMovie).CurrentValues.SetValues(movie);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // Show a confirmation page before deleting.
+    public async Task<IActionResult> Delete(int id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        return View(movie);
+    }
+
+    // Handle the Delete form submission.
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        // Remove the record and save the deletion.
+        _context.Movies.Remove(movie);
+        await _context.SaveChangesAsync();
+
         return RedirectToAction(nameof(Index));
     }
 }

@@ -7,28 +7,73 @@
 <h1>Movie administration</h1>
 <p>Movies are listed by release date, newest first.</p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Director</th>
-            <th>Genre</th>
-            <th>Rating</th>
-            <th>Runtime</th>
-            <th>Theatre release</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var movie in Model)
-        {
-            <tr>
-                <td>@movie.Title</td>
-                <td>@movie.Director</td>
-                <td>@movie.Genre</td>
-                <td>@movie.Rating</td>
-                <td>@movie.RuntimeMinutes min</td>
-                <td>@movie.TheaterReleaseDate.ToString("MMM d, yyyy")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@* Open the form for adding a movie. *@
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Movie</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>No movies have been added yet.</p>
+}
+else
+{
+    @* Allow the table to scroll horizontally on smaller screens. *@
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Director</th>
+                    <th>Genre</th>
+                    <th>Rating</th>
+                    <th>Runtime</th>
+                    <th>Theatre release</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model)
+                {
+                    <tr>
+                        <td>@movie.Title</td>
+                        <td>@movie.Director</td>
+                        <td>@movie.Genre</td>
+                        <td>@movie.Rating</td>
+
+                        @* Convert total minutes to hours and remaining minutes. *@
+                        <td>
+                            @(movie.RuntimeMinutes / 60)h
+                            @(movie.RuntimeMinutes % 60)m
+                        </td>
+
+                        <td>
+                            @movie.TheaterReleaseDate.ToString("MMM d, yyyy")
+                        </td>
+
+                        @* Pass this movie's ID to each controller action. *@
+                        <td class="text-nowrap">
+                            <a asp-action="Details"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Details
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
