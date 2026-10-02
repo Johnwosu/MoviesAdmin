@@ -8,6 +8,15 @@
 
 <h1>@Model.Title</h1>
 
+@* Display the poster when an image filename is supplied. *@
+@if (!string.IsNullOrWhiteSpace(Model.ImageFilename))
+{
+    <img src="@Url.Content("~/images/" + Model.ImageFilename)"
+         alt="@($"{Model.Title} poster")"
+         class="img-fluid mb-3"
+         style="max-width: 220px;" />
+}
+
 @* Bootstrap's text-muted class styles this movie summary.
    Reference: https://getbootstrap.com/docs/5.3/utilities/colors/ *@
 <p class="text-muted">

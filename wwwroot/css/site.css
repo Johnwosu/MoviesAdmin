@@ -1,5 +1,7 @@
 html {
   font-size: 14px;
+  position: relative;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -8,24 +10,133 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Use a consistent background and readable text. */
 body {
-  margin-bottom: 60px;
+  margin-bottom: 90px;
+  background-color: #f5f6f8;
+  color: #212529;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+/* Place each page inside a white content panel. */
+main {
+  background-color: #ffffff;
+  padding: 2rem;
+  border: 1px solid #e2e5e9;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-weight: 600;
+}
+
+/* Match links and primary buttons to the red brand colour. */
+a {
+  color: #b02a37;
+}
+
+a:hover {
+  color: #842029;
+}
+
+.btn-primary {
+  background-color: #b02a37;
+  border-color: #b02a37;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #842029;
+  border-color: #842029;
+}
+
+.btn-outline-primary {
+  color: #b02a37;
+  border-color: #b02a37;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  color: #ffffff;
+  background-color: #b02a37;
+  border-color: #b02a37;
+}
+
+.btn {
+  border-radius: 6px;
+}
+
+/* Make form labels and input fields easy to read. */
+.form-label {
+  font-weight: 600;
+}
+
+.form-control {
+  border-radius: 6px;
+}
+
+.form-control:focus {
+  border-color: #b02a37;
+}
+
+textarea.form-control {
+  min-height: 120px;
+}
+
+/* Keep keyboard focus visible on interactive controls. */
+.btn:focus-visible,
+a:focus-visible,
+.form-control:focus,
+.form-check-input:focus {
+  outline: 2px solid #b02a37;
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* Distinguish table headings from the movie rows. */
+.table th {
+  background-color: #f1f3f5;
+  font-weight: 600;
+}
+
+.table td,
+.table th {
+  padding: 0.85rem;
+}
+
+/* Allow long movie titles and descriptions to wrap. */
+main {
+  overflow-wrap: break-word;
+}
+
+/* Keep the footer consistent with the content area. */
+.footer {
+  background-color: #ffffff;
+}
+
+/* Reduce padding on smaller screens. */
+@media (max-width: 575.98px) {
+  main {
+    padding: 1rem;
+  }
+}
+
+/* Preserve the template's floating-label placeholder styling. */
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
