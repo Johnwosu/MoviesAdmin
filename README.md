@@ -64,11 +64,13 @@ The details page displays the saved movie information and its image.
 
 ![Movie details](screenshots/movie-details.png)
 
-### Edit a movie
+### Edit a movie — main information
 
-The edit form displays existing information so it can be updated.
+![Edit movie main fields](screenshots/movie-edit-top.png)
 
-![Edit movie form](screenshots/movie-edit.png)
+### Edit a movie — additional information
+
+![Edit movie additional fields and save buttons](screenshots/movie-edit-bottom.png)
 
 ### Delete confirmation
 
