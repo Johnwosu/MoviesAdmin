@@ -122,6 +122,7 @@ public class Movie : IValidatableObject
         }
 
         // Check release dates against the range chosen for this app.
+        // This validation allows release dates from January 1, 1888 through December 31, 2100, inclusive
         var earliestDate = new DateTime(1888, 1, 1);
         var latestDate = new DateTime(2100, 12, 31);
 
