@@ -50,24 +50,23 @@ else
                         <td>
                             @movie.TheaterReleaseDate.ToString("MMM d, yyyy")
                         </td>
-
-                        @* Pass this movie's ID to each controller action. *@
+                        @* Pass the movie ID and apply each button's colour. *@
                         <td class="text-nowrap">
                             <a asp-action="Details"
-                               asp-route-id="@movie.Id"
-                               class="btn btn-sm btn-outline-secondary">
+                            asp-route-id="@movie.Id"
+                            class="btn btn-sm movie-details">
                                 Details
                             </a>
 
                             <a asp-action="Edit"
-                               asp-route-id="@movie.Id"
-                               class="btn btn-sm btn-outline-primary">
+                            asp-route-id="@movie.Id"
+                            class="btn btn-sm movie-edit">
                                 Edit
                             </a>
 
                             <a asp-action="Delete"
-                               asp-route-id="@movie.Id"
-                               class="btn btn-sm btn-outline-danger">
+                            asp-route-id="@movie.Id"
+                            class="btn btn-sm btn-outline-danger">
                                 Delete
                             </a>
                         </td>

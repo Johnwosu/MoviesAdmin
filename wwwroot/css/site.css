@@ -140,3 +140,33 @@ main {
 .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Dark grey text and border for Details. */
+.movie-details {
+  color: #343a40;
+  background-color: transparent;
+  border: 1px solid #343a40;
+}
+
+.movie-details:hover,
+.movie-details:focus-visible,
+.movie-details:active {
+  color: #ffffff;
+  background-color: #343a40;
+  border-color: #343a40;
+}
+
+/* Blue separates Edit from the red Delete button. */
+.movie-edit {
+  color: #084298;
+  background-color: transparent;
+  border: 1px solid #084298;
+}
+
+.movie-edit:hover,
+.movie-edit:focus-visible,
+.movie-edit:active {
+  color: #ffffff;
+  background-color: #084298;
+  border-color: #084298;
+}
