@@ -36,6 +36,46 @@ Each movie record will contain the following information:
 
 The application will use clear navigation and consistent styling to make movie management straightforward. It will also include its own visual identity so that the administration interface fits the branding of the larger movie review system.
 
+## Screenshots
+
+### Movie list
+
+Movies are sorted by release date, newest first, with links to view,
+edit and delete each movie.
+
+![Movie administration list](screenshots/movies-list.png)
+
+### Add a movie — main information
+
+The form collects the title, synopsis, genre, content rating,
+runtime and release dates.
+
+![Main movie fields](screenshots/movie-create-top.png)
+
+### Add a movie — additional information
+
+Additional fields record production details and an image filename.
+
+![Additional movie fields and save buttons](screenshots/movie-create-bottom.png)
+
+### Movie details
+
+The details page displays the saved movie information and its image.
+
+![Movie details](screenshots/movie-details.png)
+
+### Edit a movie
+
+The edit form displays existing information so it can be updated.
+
+![Edit movie form](screenshots/movie-edit.png)
+
+### Delete confirmation
+
+A confirmation page lets the user delete the movie or cancel.
+
+![Delete confirmation](screenshots/movie-delete.png)
+
 ## Technologies
 
 The first phase of the project uses:
