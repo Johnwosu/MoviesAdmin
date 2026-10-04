@@ -78,6 +78,23 @@ A confirmation page lets the user delete the movie or cancel.
 
 ![Delete confirmation](screenshots/movie-delete.png)
 
+## Image sources and acknowledgements
+
+Movie images for Coming to America (1988), Home Alone 4 (2002),
+and The Karate Kid (1984) were obtained from their respective
+Rotten Tomatoes pages and used as sample images to test image
+display in this coursework application.
+
+Sources:
+
+- [Coming to America (1988)](https://www.rottentomatoes.com/m/coming_to_america)
+- [Home Alone 4 (2002)](https://www.rottentomatoes.com/m/home_alone_4)
+- [The Karate Kid (1984)](https://www.rottentomatoes.com/m/karate_kid)
+
+Images are credited to their respective copyright holders.
+I did not create these images. MoviesAdmin is a student project
+and is not affiliated with or endorsed by Rotten Tomatoes.
+
 ## Technologies
 
 The first phase of the project uses:
