@@ -134,6 +134,39 @@ Before running the project, install:
 - Git
 - Visual Studio or Visual Studio Code with C# Dev Kit
 
+## Learning resources and acknowledgements
+
+The following resources supported the development of MoviesAdmin:
+
+1. [Microsoft Learn — Adding Validation to the Model](https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-aspnet-mvc3/cs/adding-validation-to-the-model):
+   consulted for model validation concepts, including Required,
+   StringLength, and Range. This tutorial covers ASP.NET MVC 3;
+   this project uses ASP.NET Core MVC.
+
+2. ASP.NET documentation (aspnet.pdf):
+   consulted for explanations and examples of ASP.NET Core MVC,
+   application configuration, and web development.
+
+3. Instructor-provided GitHub repositories and Brightspace samples:
+   used as references for MVC structure, database integration,
+   and CRUD operations.
+
+4. Initial ASP.NET Core MVC template:
+   provided the starting project structure, shared layout,
+   navigation, and supporting files, which I customised.
+
+5. Bootstrap:
+   used to style forms, buttons, tables, navigation, and responsive
+   layouts. Custom CSS was added for MoviesAdmin branding.
+
+6. [Entity Framework Tutorial — StringLength Attribute](https://www.entityframeworktutorial.net/code-first/stringlength-dataannotations-attribute-in-code-first.aspx):
+   consulted to understand StringLength and its relationship
+   to database column lengths.
+
+7. VS Code Inbuilt AI (GitHub Copilot):
+Assisted with code completion to speed up development
+and provided quick troubleshooting insights during debugging.
+
 ### Setup
 
 1. Clone the repository:
