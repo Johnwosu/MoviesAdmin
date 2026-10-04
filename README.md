@@ -43,7 +43,7 @@ The application will use clear navigation and consistent styling to make movie m
 Movies are sorted by release date, newest first, with links to view,
 edit and delete each movie.
 
-![Movie administration list](screenshots/movies-list.png)
+![Movie list](screenshots/movie-list.png)
 
 ### Add a movie — main information
 
