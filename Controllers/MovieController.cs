@@ -15,7 +15,9 @@ public class MoviesController : Controller
         _context = context;
     }
 
-    // INDEX: Show all movies, newest release first.
+    // ==================== INDEX ====================
+
+    // Show all movies, newest release first.
     public async Task<IActionResult> Index()
     {
         var movies = await _context.Movies
@@ -36,45 +38,70 @@ public class MoviesController : Controller
     // POST: Receive, validate and save the new movie.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Movie movie)
+    public async Task<IActionResult> Create(
+        Movie movie,
+        int runtimeHours,
+        int runtimeMinutesPart)
     {
-        // Redisplay the form with validation errors and submitted values.
+        // Convert hours and minutes into total minutes.
+        movie.RuntimeMinutes =
+            (runtimeHours * 60) + runtimeMinutesPart;
+
+        // RuntimeMinutes is calculated rather than entered directly.
+        ModelState.Remove(nameof(Movie.RuntimeMinutes));
+
+        if (runtimeHours < 0)
+        {
+            ModelState.AddModelError(
+                "runtimeHours",
+                "Runtime hours cannot be negative.");
+        }
+
+        if (runtimeMinutesPart < 0 || runtimeMinutesPart > 59)
+        {
+            ModelState.AddModelError(
+                "runtimeMinutesPart",
+                "Runtime minutes must be between 0 and 59.");
+        }
+
+        if (movie.RuntimeMinutes <= 0)
+        {
+            ModelState.AddModelError(
+                "runtimeHours",
+                "Movie runtime must be greater than zero.");
+        }
+
         if (!ModelState.IsValid)
         {
             return View(movie);
         }
 
-        // Reset the ID so SQL Server generates it for the new record.
         movie.Id = 0;
 
-        // Add the movie and save it asynchronously.
         _context.Movies.Add(movie);
         await _context.SaveChangesAsync();
 
-        // Return to the movie list after saving.
         return RedirectToAction(nameof(Index));
     }
 
     // ==================== DETAILS ====================
 
-    // GET: Find a movie by its ID and display its details.
+    // GET: Display one movie.
     public async Task<IActionResult> Details(int id)
     {
         var movie = await _context.Movies.FindAsync(id);
 
-        // Return HTTP 404 if the movie does not exist.
         if (movie == null)
         {
             return NotFound();
         }
 
-        // Pass the movie to the Details view.
         return View(movie);
     }
 
     // ==================== EDIT ====================
 
-    // GET: Display the Edit form with the movie's current values.
+    // GET: Display the Edit form with existing values.
     public async Task<IActionResult> Edit(int id)
     {
         var movie = await _context.Movies.FindAsync(id);
@@ -87,35 +114,69 @@ public class MoviesController : Controller
         return View(movie);
     }
 
-    // POST: Receive, validate and save changes to the movie.
+    // POST: Receive, validate and save changes.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Movie movie)
+    public async Task<IActionResult> Edit(
+        int id,
+        Movie movie,
+        int runtimeHours,
+        int runtimeMinutesPart)
     {
-        // Ensure the URL and submitted form identify the same movie.
         if (id != movie.Id)
         {
             return BadRequest();
         }
 
-        // Redisplay the form if any submitted values are invalid.
+        // Convert hours and minutes into total minutes.
+        movie.RuntimeMinutes =
+            (runtimeHours * 60) + runtimeMinutesPart;
+
+        ModelState.Remove(nameof(Movie.RuntimeMinutes));
+
+        if (runtimeHours < 0)
+        {
+            ModelState.AddModelError(
+                "runtimeHours",
+                "Runtime hours cannot be negative.");
+        }
+
+        if (runtimeMinutesPart < 0 || runtimeMinutesPart > 59)
+        {
+            ModelState.AddModelError(
+                "runtimeMinutesPart",
+                "Runtime minutes must be between 0 and 59.");
+        }
+
+        if (movie.RuntimeMinutes <= 0)
+        {
+            ModelState.AddModelError(
+                "runtimeHours",
+                "Movie runtime must be greater than zero.");
+        }
+
         if (!ModelState.IsValid)
         {
             return View(movie);
         }
 
-        // Retrieve the existing movie from the database.
-        var existingMovie = await _context.Movies.FindAsync(id);
+        var existingMovie =
+            await _context.Movies.FindAsync(id);
 
         if (existingMovie == null)
         {
             return NotFound();
         }
 
-        // Copy the submitted values into the existing movie.
-        _context.Entry(existingMovie).CurrentValues.SetValues(movie);
+        // Update only the fields still used in the simplified form.
+        existingMovie.Title = movie.Title;
+        existingMovie.Synopsis = movie.Synopsis;
+        existingMovie.Genre = movie.Genre;
+        existingMovie.Rating = movie.Rating;
+        existingMovie.RuntimeMinutes = movie.RuntimeMinutes;
+        existingMovie.TheaterReleaseDate =
+            movie.TheaterReleaseDate;
 
-        // Save the changes asynchronously.
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
@@ -123,7 +184,7 @@ public class MoviesController : Controller
 
     // ==================== DELETE ====================
 
-    // GET: Display a confirmation page before deleting the movie.
+    // GET: Display deletion confirmation.
     public async Task<IActionResult> Delete(int id)
     {
         var movie = await _context.Movies.FindAsync(id);
@@ -136,8 +197,7 @@ public class MoviesController : Controller
         return View(movie);
     }
 
-    // POST: Process the confirmed deletion.
-    // ActionName lets this method handle requests to the Delete action.
+    // POST: Delete the selected movie.
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
@@ -149,7 +209,6 @@ public class MoviesController : Controller
             return NotFound();
         }
 
-        // Mark the movie for deletion and save the change.
         _context.Movies.Remove(movie);
         await _context.SaveChangesAsync();
 

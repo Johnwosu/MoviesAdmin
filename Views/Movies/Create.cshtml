@@ -3,108 +3,146 @@
 @model MoviesAdmin.Models.Movie
 
 @{
-    ViewData["Title"] = "Add Movie";
+    ViewData["Title"] = "Create Movie";
 }
 
-<h1>Add Movie</h1>
+<h1>Create Movie</h1>
 
- @* asp-for: connects each field to a property of your Movie model *@
- @*asp-validation-for: displays validation messages for each field such as [Required] [Range]*@
+<hr />
 
-<form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="row">
+    <div class="col-md-6">
 
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <!-- TITLE -->
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+
+                <input asp-for="Title"
+                       class="form-control" />
+
+                <span asp-validation-for="Title"
+                      class="text-danger">
+                </span>
+            </div>
+
+
+            <!-- SYNOPSIS -->
+            <div class="mb-3">
+                <label asp-for="Synopsis" class="form-label"></label>
+
+                <textarea asp-for="Synopsis"
+                          class="form-control"
+                          rows="5">
+                </textarea>
+
+                <span asp-validation-for="Synopsis"
+                      class="text-danger">
+                </span>
+            </div>
+
+
+            <!-- GENRE -->
+            <div class="mb-3">
+                <label asp-for="Genre" class="form-label"></label>
+
+                <input asp-for="Genre"
+                       class="form-control" />
+
+                <span asp-validation-for="Genre"
+                      class="text-danger">
+                </span>
+            </div>
+
+
+            <!-- RATING -->
+            <div class="mb-3">
+                <label asp-for="Rating" class="form-label"></label>
+
+                <input asp-for="Rating"
+                       class="form-control" />
+
+                <span asp-validation-for="Rating"
+                      class="text-danger">
+                </span>
+            </div>
+
+
+            <!-- RUNTIME -->
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                        Runtime Hours
+                    </label>
+
+                    <input type="number"
+                           name="runtimeHours"
+                           min="0"
+                           class="form-control"
+                           value="0" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">
+                        Runtime Minutes
+                    </label>
+
+                    <input type="number"
+                           name="runtimeMinutesPart"
+                           min="0"
+                           max="59"
+                           class="form-control"
+                           value="0" />
+                </div>
+
+            </div>
+
+
+            <!-- RELEASE DATE -->
+            <div class="mb-3">
+                <label asp-for="TheaterReleaseDate"
+                       class="form-label">
+                    Release Date
+                </label>
+
+                <input asp-for="TheaterReleaseDate"
+                       type="date"
+                       class="form-control" />
+
+                <span asp-validation-for="TheaterReleaseDate"
+                      class="text-danger">
+                </span>
+            </div>
+
+
+            <!-- BUTTONS -->
+            <div class="mt-4">
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Create
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Back to Movies
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Synopsis" class="form-label"></label>
-        <textarea asp-for="Synopsis" class="form-control" rows="4"></textarea>
-        <span asp-validation-for="Synopsis" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Genre" class="form-label"></label>
-        <input asp-for="Genre" class="form-control" />
-        <span asp-validation-for="Genre" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Rating" class="form-label"></label>
-        <input asp-for="Rating" class="form-control" placeholder="For example, PG-13" />
-        <span asp-validation-for="Rating" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="RuntimeMinutes" class="form-label"></label>
-        <input asp-for="RuntimeMinutes" class="form-control" />
-        <span asp-validation-for="RuntimeMinutes" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="TheaterReleaseDate" class="form-label"></label>
-        <input asp-for="TheaterReleaseDate" class="form-control" />
-        <span asp-validation-for="TheaterReleaseDate" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="StreamingReleaseDate" class="form-label"></label>
-        <input asp-for="StreamingReleaseDate" class="form-control" />
-        <span asp-validation-for="StreamingReleaseDate" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Director" class="form-label"></label>
-        <input asp-for="Director" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Producer" class="form-label"></label>
-        <input asp-for="Producer" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Screenwriter" class="form-label"></label>
-        <input asp-for="Screenwriter" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Distributor" class="form-label"></label>
-        <input asp-for="Distributor" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="ProductionCompany" class="form-label"></label>
-        <input asp-for="ProductionCompany" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="OriginalLanguage" class="form-label"></label>
-        <input asp-for="OriginalLanguage" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="SoundMix" class="form-label"></label>
-        <input asp-for="SoundMix" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="AspectRatio" class="form-label"></label>
-        <input asp-for="AspectRatio" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="ImageFilename" class="form-label"></label>
-        <input asp-for="ImageFilename" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save Movie</button>
-    <a asp-action="Index" class="btn btn-secondary">Back to Movies</a>
-</form>
+</div>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

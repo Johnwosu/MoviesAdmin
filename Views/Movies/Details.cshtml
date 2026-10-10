@@ -1,74 +1,83 @@
-@* Styling uses Bootstrap: https://getbootstrap.com/ *@
-
 @model MoviesAdmin.Models.Movie
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = "Movie Details";
 }
 
-<h1>@Model.Title</h1>
+<h1>Movie Details</h1>
 
-@* Display the poster when an image filename is supplied. *@
-@if (!string.IsNullOrWhiteSpace(Model.ImageFilename))
-{
-    <img src="@Url.Content("~/images/" + Model.ImageFilename)"
-         alt="@($"{Model.Title} poster")"
-         class="img-fluid mb-3"
-         style="max-width: 220px;" />
-}
+<hr />
 
-@* Bootstrap's text-muted class styles this movie summary.
-   Reference: https://getbootstrap.com/docs/5.3/utilities/colors/ *@
-<p class="text-muted">
-    @Model.Rating · @Model.Genre ·
-    @(Model.RuntimeMinutes / 60)h @(Model.RuntimeMinutes % 60)m
-</p>
+<div class="row">
+    <div class="col-md-8">
 
-<h2 class="h4">Synopsis</h2>
-<p>@Model.Synopsis</p>
+        <dl class="row">
 
-@* Display the remaining information for this movie. *@
-<dl class="row">
-    <dt class="col-sm-3">Director</dt>
-    <dd class="col-sm-9">@Model.Director</dd>
+            <!-- TITLE -->
+            <dt class="col-sm-3">
+                Title
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Title
+            </dd>
 
-    <dt class="col-sm-3">Producer</dt>
-    <dd class="col-sm-9">@Model.Producer</dd>
+            <!-- SYNOPSIS -->
+            <dt class="col-sm-3">
+                Synopsis
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Synopsis
+            </dd>
 
-    <dt class="col-sm-3">Screenwriter</dt>
-    <dd class="col-sm-9">@Model.Screenwriter</dd>
+            <!-- GENRE -->
+            <dt class="col-sm-3">
+                Genre
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Genre
+            </dd>
 
-    <dt class="col-sm-3">Distributor</dt>
-    <dd class="col-sm-9">@Model.Distributor</dd>
+            <!-- RATING -->
+            <dt class="col-sm-3">
+                Rating
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Rating
+            </dd>
 
-    <dt class="col-sm-3">Production company</dt>
-    <dd class="col-sm-9">@Model.ProductionCompany</dd>
+            <!-- RUNTIME -->
+            <dt class="col-sm-3">
+                Runtime
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.RuntimeMinutes / 60)h
+                @(Model.RuntimeMinutes % 60)m
+            </dd>
 
-    <dt class="col-sm-3">Original language</dt>
-    <dd class="col-sm-9">@Model.OriginalLanguage</dd>
+            <!-- RELEASE DATE -->
+            <dt class="col-sm-3">
+                Release Date
+            </dt>
+            <dd class="col-sm-9">
+                @Model.TheaterReleaseDate.ToString("MMMM d, yyyy")
+            </dd>
 
-    <dt class="col-sm-3">Theatre release</dt>
-    <dd class="col-sm-9">
-        @Model.TheaterReleaseDate.ToString("MMM d, yyyy")
-    </dd>
+        </dl>
 
-    <dt class="col-sm-3">Streaming release</dt>
-    <dd class="col-sm-9">
-        @(Model.StreamingReleaseDate?.ToString("MMM d, yyyy") ?? "Not available")
-    </dd>
+        <div class="mt-4">
 
-    <dt class="col-sm-3">Sound mix</dt>
-    <dd class="col-sm-9">@Model.SoundMix</dd>
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                Edit
+            </a>
 
-    <dt class="col-sm-3">Aspect ratio</dt>
-    <dd class="col-sm-9">@Model.AspectRatio</dd>
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back to Movies
+            </a>
 
-    <dt class="col-sm-3">Image filename</dt>
-    <dd class="col-sm-9">@Model.ImageFilename</dd>
-</dl>
+        </div>
 
-@* Include the movie ID when opening its Edit page. *@
-<a asp-action="Edit" asp-route-id="@Model.Id"
-   class="btn btn-primary">Edit Movie</a>
-
-<a asp-action="Index" class="btn btn-secondary">Back to Movies</a>
+    </div>
+</div>

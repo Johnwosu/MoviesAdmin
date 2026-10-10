@@ -4,75 +4,91 @@
     ViewData["Title"] = "Movies";
 }
 
-<h1>Movie administration</h1>
-<p>Movies are listed by release date, newest first.</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-@* Open the form for adding a movie. *@
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add Movie</a>
-</p>
+    <h1>Movies</h1>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+        Add New Movie
+    </a>
+
+</div>
 
 @if (!Model.Any())
 {
-    <p>No movies have been added yet.</p>
+    <div class="alert alert-info">
+        No movies have been added yet.
+    </div>
 }
 else
 {
-    @* Allow the table to scroll horizontally on smaller screens. *@
-    <div class="table-responsive">
-        <table class="table table-striped align-middle">
-            <thead>
+    <table class="table table-striped table-hover align-middle">
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Rating</th>
+                <th>Runtime</th>
+                <th>Release Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var movie in Model)
+            {
                 <tr>
-                    <th>Title</th>
-                    <th>Director</th>
-                    <th>Genre</th>
-                    <th>Rating</th>
-                    <th>Runtime</th>
-                    <th>Theatre release</th>
-                    <th>Actions</th>
+
+                    <td>
+                        @movie.Title
+                    </td>
+
+                    <td>
+                        @movie.Genre
+                    </td>
+
+                    <td>
+                        @movie.Rating
+                    </td>
+
+                    <td>
+                        @(movie.RuntimeMinutes / 60)h
+                        @(movie.RuntimeMinutes % 60)m
+                    </td>
+
+                    <td>
+                        @movie.TheaterReleaseDate.ToString("MMM d, yyyy")
+                    </td>
+
+                    <td>
+
+                        <a asp-action="Details"
+                           asp-route-id="@movie.Id"
+                           class="btn btn-sm btn-info">
+                            Details
+                        </a>
+
+                        <a asp-action="Edit"
+                           asp-route-id="@movie.Id"
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@movie.Id"
+                           class="btn btn-sm btn-danger">
+                            Delete
+                        </a>
+
+                    </td>
+
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var movie in Model)
-                {
-                    <tr>
-                        <td>@movie.Title</td>
-                        <td>@movie.Director</td>
-                        <td>@movie.Genre</td>
-                        <td>@movie.Rating</td>
+            }
 
-                        @* Convert total minutes to hours and remaining minutes. *@
-                        <td>
-                            @(movie.RuntimeMinutes / 60)h
-                            @(movie.RuntimeMinutes % 60)m
-                        </td>
+        </tbody>
 
-                        <td>
-                            @movie.TheaterReleaseDate.ToString("MMM d, yyyy")
-                        </td>
-                        @* Pass the movie ID and apply each button's colour. *@
-                        <td class="text-nowrap">
-                            <a asp-action="Details"
-                            asp-route-id="@movie.Id"
-                            class="btn btn-sm movie-details">
-                                Details
-                            </a>
-
-                            <a asp-action="Edit"
-                            asp-route-id="@movie.Id"
-                            class="btn btn-sm movie-edit">
-                                Edit
-                            </a>
-
-                            <a asp-action="Delete"
-                            asp-route-id="@movie.Id"
-                            class="btn btn-sm btn-outline-danger">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    </table>
 }
