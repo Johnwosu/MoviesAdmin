@@ -13,7 +13,9 @@
 <div class="row">
     <div class="col-md-6">
 
-        <form asp-action="Create" method="post">
+        <form asp-action="Create"
+              method="post"
+              enctype="multipart/form-data">
 
             <div asp-validation-summary="ModelOnly"
                  class="text-danger mb-3">
@@ -21,7 +23,9 @@
 
             <!-- TITLE -->
             <div class="mb-3">
-                <label asp-for="Title" class="form-label"></label>
+                <label asp-for="Title"
+                       class="form-label">
+                </label>
 
                 <input asp-for="Title"
                        class="form-control" />
@@ -31,10 +35,11 @@
                 </span>
             </div>
 
-
             <!-- SYNOPSIS -->
             <div class="mb-3">
-                <label asp-for="Synopsis" class="form-label"></label>
+                <label asp-for="Synopsis"
+                       class="form-label">
+                </label>
 
                 <textarea asp-for="Synopsis"
                           class="form-control"
@@ -46,10 +51,11 @@
                 </span>
             </div>
 
-
             <!-- GENRE -->
             <div class="mb-3">
-                <label asp-for="Genre" class="form-label"></label>
+                <label asp-for="Genre"
+                       class="form-label">
+                </label>
 
                 <input asp-for="Genre"
                        class="form-control" />
@@ -59,10 +65,11 @@
                 </span>
             </div>
 
-
-            <!-- RATING -->
+            <!-- CONTENT RATING -->
             <div class="mb-3">
-                <label asp-for="Rating" class="form-label"></label>
+                <label asp-for="Rating"
+                       class="form-label">
+                </label>
 
                 <input asp-for="Rating"
                        class="form-control" />
@@ -72,10 +79,10 @@
                 </span>
             </div>
 
-
             <!-- RUNTIME -->
             <div class="row">
 
+                <!-- RUNTIME HOURS -->
                 <div class="col-md-6 mb-3">
                     <label class="form-label">
                         Runtime Hours
@@ -85,9 +92,15 @@
                            name="runtimeHours"
                            min="0"
                            class="form-control"
-                           value="0" />
+                           />
+
+                    @Html.ValidationMessage(
+                        "runtimeHours",
+                        null,
+                        new { @class = "text-danger" })
                 </div>
 
+                <!-- RUNTIME MINUTES -->
                 <div class="col-md-6 mb-3">
                     <label class="form-label">
                         Runtime Minutes
@@ -98,11 +111,15 @@
                            min="0"
                            max="59"
                            class="form-control"
-                           value="0" />
+                        />
+
+                    @Html.ValidationMessage(
+                        "runtimeMinutesPart",
+                        null,
+                        new { @class = "text-danger" })
                 </div>
 
             </div>
-
 
             <!-- RELEASE DATE -->
             <div class="mb-3">
@@ -120,6 +137,22 @@
                 </span>
             </div>
 
+            <!-- IMAGE UPLOAD -->
+            <div class="mb-3">
+                <label class="form-label">
+                    Image Upload
+                </label>
+
+                <input type="file"
+                       name="imageFile"
+                       class="form-control"
+                       accept="image/*" />
+
+                @Html.ValidationMessage(
+                    "imageFile",
+                    null,
+                    new { @class = "text-danger" })
+            </div>
 
             <!-- BUTTONS -->
             <div class="mt-4">

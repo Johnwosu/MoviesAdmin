@@ -51,6 +51,9 @@ namespace MoviesAdmin.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OriginalLanguage")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");

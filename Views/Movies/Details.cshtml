@@ -9,6 +9,27 @@
 <hr />
 
 <div class="row">
+
+    <!-- MOVIE IMAGE -->
+    <div class="col-md-4 mb-4">
+
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl"
+                 alt="@Model.Title poster"
+                 class="img-fluid rounded"
+                 style="max-height: 450px; object-fit: contain;" />
+        }
+        else
+        {
+            <p class="text-muted">
+                No image available.
+            </p>
+        }
+
+    </div>
+
+    <!-- MOVIE INFORMATION -->
     <div class="col-md-8">
 
         <dl class="row">
@@ -64,6 +85,7 @@
 
         </dl>
 
+        <!-- BUTTONS -->
         <div class="mt-4">
 
             <a asp-action="Edit"
@@ -80,4 +102,5 @@
         </div>
 
     </div>
+
 </div>

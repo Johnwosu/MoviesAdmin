@@ -5,14 +5,12 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-
     <h1>Movies</h1>
 
     <a asp-action="Create"
        class="btn btn-primary">
         Add New Movie
     </a>
-
 </div>
 
 @if (!Model.Any())
@@ -24,9 +22,9 @@
 else
 {
     <table class="table table-striped table-hover align-middle">
-
         <thead>
             <tr>
+                <th>Image</th>
                 <th>Title</th>
                 <th>Genre</th>
                 <th>Rating</th>
@@ -37,34 +35,54 @@ else
         </thead>
 
         <tbody>
-
             @foreach (var movie in Model)
             {
                 <tr>
 
+                    <!-- MOVIE IMAGE -->
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(movie.ImageUrl))
+                        {
+                            <img src="@movie.ImageUrl"
+                                 alt="@movie.Title poster"
+                                 style="width: 150px; height: 110px; object-fit: contain;" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                No image
+                            </span>
+                        }
+                    </td>
+
+                    <!-- TITLE -->
                     <td>
                         @movie.Title
                     </td>
 
+                    <!-- GENRE -->
                     <td>
                         @movie.Genre
                     </td>
 
+                    <!-- RATING -->
                     <td>
                         @movie.Rating
                     </td>
 
+                    <!-- RUNTIME -->
                     <td>
                         @(movie.RuntimeMinutes / 60)h
                         @(movie.RuntimeMinutes % 60)m
                     </td>
 
+                    <!-- RELEASE DATE -->
                     <td>
                         @movie.TheaterReleaseDate.ToString("MMM d, yyyy")
                     </td>
 
+                    <!-- ACTIONS -->
                     <td>
-
                         <a asp-action="Details"
                            asp-route-id="@movie.Id"
                            class="btn btn-sm btn-info">
@@ -82,13 +100,10 @@ else
                            class="btn btn-sm btn-danger">
                             Delete
                         </a>
-
                     </td>
 
                 </tr>
             }
-
         </tbody>
-
     </table>
 }

@@ -85,6 +85,10 @@ public class Movie : IValidatableObject
         ErrorMessage = "Enter an aspect ratio such as 1.85:1 or 16:9.")]
     public string? AspectRatio { get; set; }
 
+    // Accept a URL or a relative path to an image file.
+    [Display(Name = "Movie image")]
+    public string? ImageUrl { get; set; }
+
     // Accept a simple image filename, without folders or a URL.
     [StringLength(150)]
     [Display(Name = "Image filename")]

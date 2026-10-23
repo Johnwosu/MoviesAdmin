@@ -1,3 +1,5 @@
+@* Uses Bootstrap styling and allows an optional image replacement. *@
+
 @model MoviesAdmin.Models.Movie
 
 @{
@@ -11,18 +13,31 @@
 <div class="row">
     <div class="col-md-6">
 
-        <form asp-action="Edit" method="post">
+        @* multipart/form-data is required because the form can upload an image file. *@
+        <form asp-action="Edit"
+              method="post"
+              enctype="multipart/form-data">
 
+            @* Display model validation errors. *@
             <div asp-validation-summary="ModelOnly"
                  class="text-danger mb-3">
             </div>
 
-            <!-- Keep the movie ID -->
-            <input type="hidden" asp-for="Id" />
+            @* Keep the ID of the movie being edited. *@
+            <input type="hidden"
+                   asp-for="Id" />
+
+            @* Keep the current Blob image URL.
+               If no new image is selected, this existing URL remains with the movie. *@
+            <input type="hidden"
+                   asp-for="ImageUrl" />
 
             <!-- TITLE -->
             <div class="mb-3">
-                <label asp-for="Title" class="form-label"></label>
+
+                <label asp-for="Title"
+                       class="form-label">
+                </label>
 
                 <input asp-for="Title"
                        class="form-control" />
@@ -30,24 +45,33 @@
                 <span asp-validation-for="Title"
                       class="text-danger">
                 </span>
+
             </div>
 
             <!-- SYNOPSIS -->
             <div class="mb-3">
-                <label asp-for="Synopsis" class="form-label"></label>
+
+                <label asp-for="Synopsis"
+                       class="form-label">
+                </label>
 
                 <textarea asp-for="Synopsis"
                           class="form-control"
-                          rows="5"></textarea>
+                          rows="5">
+                </textarea>
 
                 <span asp-validation-for="Synopsis"
                       class="text-danger">
                 </span>
+
             </div>
 
             <!-- GENRE -->
             <div class="mb-3">
-                <label asp-for="Genre" class="form-label"></label>
+
+                <label asp-for="Genre"
+                       class="form-label">
+                </label>
 
                 <input asp-for="Genre"
                        class="form-control" />
@@ -55,11 +79,15 @@
                 <span asp-validation-for="Genre"
                       class="text-danger">
                 </span>
+
             </div>
 
             <!-- RATING -->
             <div class="mb-3">
-                <label asp-for="Rating" class="form-label"></label>
+
+                <label asp-for="Rating"
+                       class="form-label">
+                </label>
 
                 <input asp-for="Rating"
                        class="form-control" />
@@ -67,12 +95,15 @@
                 <span asp-validation-for="Rating"
                       class="text-danger">
                 </span>
+
             </div>
 
             <!-- RUNTIME -->
             <div class="row">
 
+                @* Display the hour part of RuntimeMinutes. *@
                 <div class="col-md-6 mb-3">
+
                     <label class="form-label">
                         Runtime Hours
                     </label>
@@ -82,9 +113,12 @@
                            min="0"
                            class="form-control"
                            value="@(Model.RuntimeMinutes / 60)" />
+
                 </div>
 
+                @* Display the remaining minutes after the hours are calculated. *@
                 <div class="col-md-6 mb-3">
+
                     <label class="form-label">
                         Runtime Minutes
                     </label>
@@ -95,12 +129,14 @@
                            max="59"
                            class="form-control"
                            value="@(Model.RuntimeMinutes % 60)" />
+
                 </div>
 
             </div>
 
             <!-- RELEASE DATE -->
             <div class="mb-3">
+
                 <label asp-for="TheaterReleaseDate"
                        class="form-label">
                     Release Date
@@ -113,16 +149,66 @@
                 <span asp-validation-for="TheaterReleaseDate"
                       class="text-danger">
                 </span>
+
+            </div>
+
+            <!-- CURRENT MOVIE IMAGE -->
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Current Image
+                </label>
+
+                <div>
+                    @* Display the current image stored in Blob Storage. *@
+                    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl"
+                             alt="@Model.Title poster"
+                             class="img-fluid rounded"
+                             style="max-width: 200px; max-height: 300px; object-fit: contain;" />
+                    }
+                    else
+                    {
+                        <p class="text-muted">
+                            No image available.
+                        </p>
+                    }
+                </div>
+
+            </div>
+
+            <!-- REPLACE MOVIE IMAGE -->
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Replace Image
+                </label>
+
+                @* Selecting a file is optional.
+                   The name "imageFile" must match the IFormFile parameter
+                   in the Edit action in MoviesController. *@
+                <input type="file"
+                       name="imageFile"
+                       class="form-control"
+                       accept="image/*" />
+
+                <div class="form-text">
+                    Leave this empty to keep the current image.
+                </div>
+
             </div>
 
             <!-- BUTTONS -->
             <div class="mt-4">
 
+                @* Save the movie changes. *@
                 <button type="submit"
                         class="btn btn-primary">
-                    Save Changes
+                    Save
                 </button>
 
+                @* Return to the movie list without saving additional changes. *@
                 <a asp-action="Index"
                    class="btn btn-secondary">
                     Back to Movies

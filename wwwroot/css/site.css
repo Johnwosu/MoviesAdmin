@@ -170,3 +170,9 @@ main {
   background-color: #084298;
   border-color: #084298;
 }
+
+/* Size movie poster thumbnails on the Movies list page. */
+/* .thumbnail {
+  width: 150px;
+  height: auto;
+} */

@@ -1,16 +1,21 @@
-using Microsoft.EntityFrameworkCore; 
-using MoviesAdmin.Data; // Using directive for the MoviesAdmin.Data namespace
+using Microsoft.EntityFrameworkCore;
+using MoviesAdmin.Data;
+using MoviesAdmin.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add MVC services.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<MoviesAdminContext>(options =>  // Configure the DbContext to use SQL Server with the connection string from appsettings.json
+// Configure SQL Server database.
+builder.Services.AddDbContext<MoviesAdminContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("MoviesAdminContext")));
 
-var app = builder.Build();  // Build the application
+// Register Azure Blob Storage service.
+builder.Services.AddScoped<IAzureBlobService, AzureBlobService>();
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -20,11 +25,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();  
+app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
