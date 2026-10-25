@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <rect width="60" height="60" rx="12" fill="#b4232f"></rect>
+  <rect x="10" y="17" width="40" height="30" rx="4" fill="#ffffff"></rect>
+  <rect x="10" y="11" width="40" height="10" rx="3" fill="#ffffff"></rect>
+
+  <line x1="17" y1="11" x2="23" y2="21" stroke="#b4232f" stroke-width="4"></line>
+  <line x1="29" y1="11" x2="35" y2="21" stroke="#b4232f" stroke-width="4"></line>
+  <line x1="41" y1="11" x2="47" y2="21" stroke="#b4232f" stroke-width="4"></line>
+
+  <text x="30" y="39" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#b4232f">
+    MA
+  </text>
+</svg>

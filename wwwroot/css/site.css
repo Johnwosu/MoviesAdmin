@@ -171,6 +171,60 @@ main {
   border-color: #084298;
 }
 
+/* MoviesAdmin branding */
+
+:root {
+    --movie-dark: #1F2937;
+    --movie-red: #B4232F;
+    --movie-light: #F8F9FA;
+}
+
+body {
+    background-color: var(--movie-light);
+}
+
+.app-navbar {
+    background-color: var(--movie-dark);
+}
+
+.app-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    opacity: 0.8;
+}
+
+.btn-primary {
+    background-color: var(--movie-red);
+    border-color: var(--movie-red);
+}
+
+.btn-primary:hover {
+    background-color: #8f1c26;
+    border-color: #8f1c26;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--movie-dark);
+}
+
+footer {
+    background-color: white;
+}
+
 /* Size movie poster thumbnails on the Movies list page. */
 /* .thumbnail {
   width: 150px;
