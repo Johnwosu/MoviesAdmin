@@ -69,14 +69,22 @@
             <!-- GENRE -->
             <div class="mb-3">
 
-                <label asp-for="Genre"
+                <label asp-for="GenreId"
                        class="form-label">
+                    Genre
                 </label>
 
-                <input asp-for="Genre"
-                       class="form-control" />
+                <select asp-for="GenreId"
+                        class="form-control"
+                        asp-items="ViewBag.GenreId">
 
-                <span asp-validation-for="Genre"
+                    <option value="">
+                        -- Select Genre --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="GenreId"
                       class="text-danger">
                 </span>
 
@@ -85,14 +93,22 @@
             <!-- RATING -->
             <div class="mb-3">
 
-                <label asp-for="Rating"
+                <label asp-for="AudienceRatingId"
                        class="form-label">
+                    Content Rating
                 </label>
 
-                <input asp-for="Rating"
-                       class="form-control" />
+                <select asp-for="AudienceRatingId"
+                        class="form-control"
+                        asp-items="ViewBag.AudienceRatingId">
 
-                <span asp-validation-for="Rating"
+                    <option value="">
+                        -- Select Content Rating --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="AudienceRatingId"
                       class="text-danger">
                 </span>
 

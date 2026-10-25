@@ -13,4 +13,10 @@ public class MoviesAdminContext : DbContext
 
     // DbSet property for the Movie entity, representing the Movies table in the database
     public DbSet<Movie> Movies { get; set; } = default!; // ! only suppresses a compiler warning, EFCore supplies the movie set.
+
+    // Represents the Genres table.
+    public DbSet<Genre> Genres { get; set; } = default!;
+
+    // Represents the AudienceRatings table.
+    public DbSet<AudienceRating> AudienceRatings { get; set; } = default!;
 }
