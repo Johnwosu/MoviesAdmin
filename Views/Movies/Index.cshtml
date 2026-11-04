@@ -7,10 +7,14 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Movies</h1>
 
-    <a asp-action="Create"
-       class="btn btn-primary">
-        Add New Movie
-    </a>
+    @* Only administrators can add movies. *@
+    @if (User.IsInRole("Administrator"))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+            Add New Movie
+        </a>
+    }
 </div>
 
 @if (!Model.Any())
@@ -83,23 +87,42 @@ else
 
                     <!-- ACTIONS -->
                     <td>
+
+                        @* Everyone can view movie details. *@
                         <a asp-action="Details"
                            asp-route-id="@movie.Id"
                            class="btn btn-sm btn-info">
                             Details
                         </a>
 
-                        <a asp-action="Edit"
-                           asp-route-id="@movie.Id"
-                           class="btn btn-sm btn-warning">
-                            Edit
-                        </a>
+                        @* Only administrators can edit or delete movies. *@
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-warning">
+                                Edit
+                            </a>
 
-                        <a asp-action="Delete"
-                           asp-route-id="@movie.Id"
-                           class="btn btn-sm btn-danger">
-                            Delete
-                        </a>
+                            <a asp-action="Delete"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-danger">
+                                Delete
+                            </a>
+                        }
+
+                        @* Anonymous users and Critics can see the Review button. *@
+                        @if (!(User.Identity?.IsAuthenticated ?? false) ||
+                             User.IsInRole("Critic"))
+                        {
+                            <a asp-controller="CriticReviews"
+                               asp-action="Create"
+                               asp-route-movieId="@movie.Id"
+                               class="btn btn-sm btn-secondary">
+                                Review
+                            </a>
+                        }
+
                     </td>
 
                 </tr>

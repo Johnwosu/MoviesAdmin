@@ -1,0 +1,101 @@
+@model MoviesAdmin.Models.CriticReview
+
+@{
+    ViewData["Title"] = "Write Review";
+}
+
+<h1>Write Review</h1>
+
+@if (Model.Movie != null)
+{
+    <h4 class="mb-4">
+        @Model.Movie.Title
+    </h4>
+}
+
+<hr />
+
+<div class="row">
+    <div class="col-md-7">
+
+        <form asp-action="Create"
+              method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
+
+            <input type="hidden"
+                   asp-for="MovieId" />
+
+            <!-- RATING -->
+            <div class="mb-3">
+                <label asp-for="Rating"
+                       class="form-label">
+                    Rating (0 - 5)
+                </label>
+
+                <input asp-for="Rating"
+                       class="form-control"
+                       min="0"
+                       max="5" />
+
+                <span asp-validation-for="Rating"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <!-- REVIEW -->
+            <div class="mb-3">
+                <label asp-for="Description"
+                       class="form-label">
+                    Review
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="7"
+                          maxlength="1000">
+                </textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger">
+                </span>
+
+                <div class="form-text">
+                    Maximum 1000 characters.
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <button type="submit"
+                    name="submitAction"
+                    value="draft"
+                    class="btn btn-secondary">
+                Save Draft
+            </button>
+
+            <button type="submit"
+                    name="submitAction"
+                    value="publish"
+                    class="btn btn-primary">
+                Publish Review
+            </button>
+
+            <a asp-controller="Movies"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+}

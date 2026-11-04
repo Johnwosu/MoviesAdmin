@@ -19,10 +19,10 @@
         <nav class="navbar navbar-expand-sm navbar-dark app-navbar shadow-sm mb-4">
             <div class="container">
 
-                @* Logo and application name. *@
+                @* Logo and application name. The Home page is public. *@
                 <a class="navbar-brand d-flex align-items-center fw-bold"
                    asp-area=""
-                   asp-controller="Movies"
+                   asp-controller="Home"
                    asp-action="Index">
 
                     <img src="~/images/moviesadmin-logo.svg"
@@ -46,47 +46,49 @@
 
                 <div class="collapse navbar-collapse" id="mainNavigation">
 
+                    @* Left side navigation. *@
                     <ul class="navbar-nav me-auto">
 
+                        @* Movies can be viewed by everyone. *@
                         <li class="nav-item">
                             <a class="nav-link text-white"
-                               asp-area=""
                                asp-controller="Movies"
                                asp-action="Index">
                                 Movies
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-white"
-                               asp-area=""
-                               asp-controller="Movies"
-                               asp-action="Create">
-                                Add Movie
-                            </a>
-                        </li>
+                        @* Movie management options are for administrators only. *@
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white"
+                                   asp-controller="Movies"
+                                   asp-action="Create">
+                                    Add Movie
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-white"
-                               asp-area=""
-                               asp-controller="Genres"
-                               asp-action="Index">
-                                Genres
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white"
+                                   asp-controller="Genres"
+                                   asp-action="Index">
+                                    Genres
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-white"
-                               asp-area=""
-                               asp-controller="AudienceRatings"
-                               asp-action="Index">
-                                Audience Ratings
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white"
+                                   asp-controller="AudienceRatings"
+                                   asp-action="Index">
+                                    Audience Ratings
+                                </a>
+                            </li>
+                        }
 
+                        @* Privacy is available to everyone. *@
                         <li class="nav-item">
                             <a class="nav-link text-white"
-                               asp-area=""
                                asp-controller="Home"
                                asp-action="Privacy">
                                 Privacy
@@ -95,9 +97,86 @@
 
                     </ul>
 
-                    <span class="navbar-text text-white">
-                        Movie Administration
-                    </span>
+
+                    @* Right side navigation. *@
+                    <ul class="navbar-nav ms-auto">
+
+                        @if (User.Identity != null &&
+                             User.Identity.IsAuthenticated)
+                        {
+                            // Get the logged-in user's display name.
+                            var displayName =
+                                User.Identity.Name ??
+                                User.Claims
+                                    .FirstOrDefault(
+                                        c => c.Type == "name")
+                                    ?.Value ??
+                                User.Claims
+                                    .FirstOrDefault(
+                                        c => c.Type == "email")
+                                    ?.Value ??
+                                "User";
+
+                            // Split the name so initials can be created.
+                            var nameParts = displayName.Split(
+                                ' ',
+                                StringSplitOptions.RemoveEmptyEntries);
+
+                            string initials;
+
+                            if (nameParts.Length >= 2)
+                            {
+                                initials =
+                                    $"{nameParts[0][0]}{nameParts[1][0]}"
+                                    .ToUpper();
+                            }
+                            else
+                            {
+                                initials =
+                                    displayName
+                                        .Substring(
+                                            0,
+                                            Math.Min(
+                                                2,
+                                                displayName.Length))
+                                        .ToUpper();
+                            }
+
+                            @* Logged-in user's initials open the Profile page. *@
+                            <li class="nav-item">
+                                <a class="nav-link text-white d-flex align-items-center"
+                                   asp-controller="Account"
+                                   asp-action="Profile"
+                                   title="@displayName">
+
+                                    <span class="user-initials">
+                                        @initials
+                                    </span>
+
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white"
+                                   asp-controller="Account"
+                                   asp-action="Logout">
+                                    Logout
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            @* Anonymous users see Login. *@
+                            <li class="nav-item">
+                                <a class="nav-link text-white"
+                                   asp-controller="Account"
+                                   asp-action="Login">
+                                    Login
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
 
                 </div>
             </div>

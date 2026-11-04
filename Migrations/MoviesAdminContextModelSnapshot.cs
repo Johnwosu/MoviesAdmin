@@ -40,6 +40,42 @@ namespace MoviesAdmin.Migrations
                     b.ToTable("AudienceRatings");
                 });
 
+            modelBuilder.Entity("MoviesAdmin.Models.CriticReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("CriticReviews");
+                });
+
             modelBuilder.Entity("MoviesAdmin.Models.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -99,6 +135,17 @@ namespace MoviesAdmin.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("MoviesAdmin.Models.CriticReview", b =>
+                {
+                    b.HasOne("MoviesAdmin.Models.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("MoviesAdmin.Models.Movie", b =>

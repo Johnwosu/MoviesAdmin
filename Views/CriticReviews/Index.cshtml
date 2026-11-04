@@ -1,0 +1,99 @@
+@model IEnumerable<MoviesAdmin.Models.CriticReview>
+
+@{
+    ViewData["Title"] = "My Reviews";
+}
+
+<h1>My Reviews</h1>
+
+<hr />
+
+@if (TempData["ReviewMessage"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["ReviewMessage"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You have not written any reviews yet.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Rating</th>
+                <th>Review</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var review in Model)
+            {
+                <tr>
+                    <td>
+                        @review.Movie.Title
+                    </td>
+
+                    <td>
+                        @review.Rating / 5
+                    </td>
+
+                    <td>
+                        @review.Description
+                    </td>
+
+                    <td>
+                        @if (review.IsPublished)
+                        {
+                            <span class="badge bg-success">
+                                Published
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                Draft
+                            </span>
+                        }
+                    </td>
+
+                    <td>
+                        @review.CreatedDate.ToString("MMM d, yyyy")
+                    </td>
+
+                    <td>
+                        @if (!review.IsPublished)
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@review.Id"
+                               class="btn btn-sm btn-warning">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@review.Id"
+                               class="btn btn-sm btn-danger">
+                                Delete
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Locked
+                            </span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

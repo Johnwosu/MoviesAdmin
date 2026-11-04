@@ -19,4 +19,7 @@ public class MoviesAdminContext : DbContext
 
     // Represents the AudienceRatings table.
     public DbSet<AudienceRating> AudienceRatings { get; set; } = default!;
+
+    // Represents the CriticReviews table.
+    public DbSet<CriticReview> CriticReviews { get; set; } = default!;
 }

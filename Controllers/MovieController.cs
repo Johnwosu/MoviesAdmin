@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using MoviesAdmin.Data;
 using MoviesAdmin.Models;
 using MoviesAdmin.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MoviesAdmin.Controllers;
 
+[Authorize(Roles = "Administrator,Critic")]
 public class MoviesController : Controller
 {
     private readonly MoviesAdminContext _context;
@@ -28,6 +30,7 @@ public class MoviesController : Controller
     // Display all movies, newest release first.
     // Include Genre and AudienceRating so their titles
     // can be displayed in the Index view.
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         var movies = await _context.Movies
@@ -43,20 +46,28 @@ public class MoviesController : Controller
     // ==================== CREATE ====================
 
     // GET: Display the form for creating a new movie.
+    [Authorize(Roles = "Administrator")]
     public IActionResult Create()
     {
         // Load Genre choices for the dropdown.
-        ViewData["GenreId"] =
+        var genres = _context.Genres
+            .OrderBy(genre => genre.Title)
+            .ToList();
+
+        // Load Audience Rating choices for the dropdown.
+        var audienceRatings = _context.AudienceRatings
+            .OrderBy(rating => rating.Title)
+            .ToList();
+
+        ViewBag.GenreId =
             new SelectList(
-                _context.Genres.OrderBy(genre => genre.Title),
+                genres,
                 "Id",
                 "Title");
 
-        // Load Audience Rating choices for the dropdown.
-        ViewData["AudienceRatingId"] =
+        ViewBag.AudienceRatingId =
             new SelectList(
-                _context.AudienceRatings
-                    .OrderBy(rating => rating.Title),
+                audienceRatings,
                 "Id",
                 "Title");
 
@@ -69,6 +80,7 @@ public class MoviesController : Controller
     // and save the movie to the database.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Create(
         [Bind(
             "Id,Title,Synopsis,GenreId,AudienceRatingId,TheaterReleaseDate")]
@@ -169,19 +181,19 @@ public class MoviesController : Controller
         if (!ModelState.IsValid)
         {
             // Reload the Genre dropdown.
-            ViewData["GenreId"] =
+            ViewBag.GenreId =
                 new SelectList(
-                    _context.Genres.OrderBy(
-                        genre => genre.Title),
+                    _context.Genres
+                        .OrderBy(genre => genre.Title),
                     "Id",
                     "Title",
                     movie.GenreId);
 
             // Reload the Audience Rating dropdown.
-            ViewData["AudienceRatingId"] =
+            ViewBag.AudienceRatingId =
                 new SelectList(
-                    _context.AudienceRatings.OrderBy(
-                        rating => rating.Title),
+                    _context.AudienceRatings
+                        .OrderBy(rating => rating.Title),
                     "Id",
                     "Title",
                     movie.AudienceRatingId);
@@ -231,6 +243,8 @@ public class MoviesController : Controller
 
     // Display one movie including its related
     // Genre and Audience Rating.
+
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
         var movie = await _context.Movies
@@ -251,6 +265,7 @@ public class MoviesController : Controller
     // ==================== EDIT ====================
 
     // GET: Display the Edit form.
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Edit(int id)
     {
         var movie =
@@ -263,20 +278,20 @@ public class MoviesController : Controller
 
         // Load Genre choices and select
         // the movie's current Genre.
-        ViewData["GenreId"] =
+        ViewBag.GenreId =
             new SelectList(
-                _context.Genres.OrderBy(
-                    genre => genre.Title),
+                _context.Genres
+                    .OrderBy(genre => genre.Title),
                 "Id",
                 "Title",
                 movie.GenreId);
 
         // Load Audience Rating choices and select
         // the movie's current Audience Rating.
-        ViewData["AudienceRatingId"] =
+        ViewBag.AudienceRatingId =
             new SelectList(
-                _context.AudienceRatings.OrderBy(
-                    rating => rating.Title),
+                _context.AudienceRatings
+                    .OrderBy(rating => rating.Title),
                 "Id",
                 "Title",
                 movie.AudienceRatingId);
@@ -289,6 +304,7 @@ public class MoviesController : Controller
     // A replacement poster is optional.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Edit(
         int id,
         [Bind(
@@ -392,19 +408,19 @@ public class MoviesController : Controller
                 existingMovie.ImageUrl;
 
             // Reload Genre dropdown.
-            ViewData["GenreId"] =
+            ViewBag.GenreId =
                 new SelectList(
-                    _context.Genres.OrderBy(
-                        genre => genre.Title),
+                    _context.Genres
+                        .OrderBy(genre => genre.Title),
                     "Id",
                     "Title",
                     movie.GenreId);
 
             // Reload Audience Rating dropdown.
-            ViewData["AudienceRatingId"] =
+            ViewBag.AudienceRatingId =
                 new SelectList(
-                    _context.AudienceRatings.OrderBy(
-                        rating => rating.Title),
+                    _context.AudienceRatings
+                        .OrderBy(rating => rating.Title),
                     "Id",
                     "Title",
                     movie.AudienceRatingId);
@@ -473,6 +489,7 @@ public class MoviesController : Controller
     // ==================== DELETE ====================
 
     // GET: Display the Delete confirmation page.
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Delete(int id)
     {
         var movie = await _context.Movies
@@ -493,6 +510,7 @@ public class MoviesController : Controller
     // POST: Delete the movie only after confirmation.
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var movie =
