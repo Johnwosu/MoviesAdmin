@@ -36,6 +36,30 @@ public class CriticReviewsController : Controller
     }
 
 
+    // ==================== DETAILS ====================
+
+    // Display one review belonging to the logged-in critic.
+    public async Task<IActionResult> Details(int id)
+    {
+        var userId = User.GetUserId();
+
+        var criticReview =
+            await _context.CriticReviews
+                .Include(review => review.Movie)
+                .FirstOrDefaultAsync(
+                    review =>
+                        review.Id == id &&
+                        review.CreatedBy == userId);
+
+        if (criticReview == null)
+        {
+            return NotFound();
+        }
+
+        return View(criticReview);
+    }
+
+
     // ==================== CREATE ====================
 
     // GET: Display the form for creating a review.
@@ -43,7 +67,7 @@ public class CriticReviewsController : Controller
     {
         var userId = User.GetUserId();
 
-        // Check whether this critic already reviewed the movie.
+        // A critic can only review each movie once.
         var existingReview =
             await _context.CriticReviews
                 .FirstOrDefaultAsync(
@@ -53,7 +77,7 @@ public class CriticReviewsController : Controller
 
         if (existingReview != null)
         {
-            // A draft can still be edited.
+            // Existing draft can still be edited.
             if (!existingReview.IsPublished)
             {
                 return RedirectToAction(
@@ -61,27 +85,29 @@ public class CriticReviewsController : Controller
                     new { id = existingReview.Id });
             }
 
-            // A published review is locked.
+            // Published reviews are locked.
             TempData["ReviewMessage"] =
                 "You have already published a review for this movie.";
 
             return RedirectToAction(nameof(Index));
         }
 
-        var movie = await _context.Movies
-            .FirstOrDefaultAsync(
-                movie => movie.Id == movieId);
+        var movie =
+            await _context.Movies
+                .FirstOrDefaultAsync(
+                    movie => movie.Id == movieId);
 
         if (movie == null)
         {
             return NotFound();
         }
 
-        var criticReview = new CriticReview
-        {
-            MovieId = movie.Id,
-            Movie = movie
-        };
+        var criticReview =
+            new CriticReview
+            {
+                MovieId = movie.Id,
+                Movie = movie
+            };
 
         return View(criticReview);
     }
@@ -97,14 +123,14 @@ public class CriticReviewsController : Controller
     {
         var userId = User.GetUserId();
 
-        // CreatedBy is supplied by the application,
-        // not entered through the form.
+        // CreatedBy is supplied by the application.
         ModelState.Remove(
             nameof(CriticReview.CreatedBy));
 
         // Make sure the movie exists.
-        var movie = await _context.Movies
-            .FindAsync(criticReview.MovieId);
+        var movie =
+            await _context.Movies.FindAsync(
+                criticReview.MovieId);
 
         if (movie == null)
         {
@@ -113,8 +139,7 @@ public class CriticReviewsController : Controller
 
         criticReview.Movie = movie;
 
-        // Prevent one critic from reviewing
-        // the same movie more than once.
+        // Prevent duplicate reviews by the same critic.
         var reviewExists =
             await _context.CriticReviews
                 .AnyAsync(
@@ -135,17 +160,17 @@ public class CriticReviewsController : Controller
             return View(criticReview);
         }
 
-        // Store the logged-in critic's Auth0 user ID.
+        // Store ownership.
         criticReview.CreatedBy = userId;
 
-        // Store the creation date.
         criticReview.CreatedDate = DateTime.Now;
 
-        // Publish only when the Publish button is clicked.
+        // Publish only when Publish Review was clicked.
         criticReview.IsPublished =
             submitAction == "publish";
 
-        _context.CriticReviews.Add(criticReview);
+        _context.CriticReviews.Add(
+            criticReview);
 
         await _context.SaveChangesAsync();
 
@@ -191,7 +216,7 @@ public class CriticReviewsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int id,
-        [Bind("Id,MovieId,Description,Rating")]
+        [Bind("Id,Description,Rating")]
         CriticReview criticReview,
         string submitAction)
     {
@@ -215,7 +240,7 @@ public class CriticReviewsController : Controller
             return NotFound();
         }
 
-        // Published reviews cannot be changed.
+        // Published reviews cannot be modified.
         if (existingReview.IsPublished)
         {
             return Forbid();
@@ -226,22 +251,25 @@ public class CriticReviewsController : Controller
 
         if (!ModelState.IsValid)
         {
+            criticReview.MovieId =
+                existingReview.MovieId;
+
             criticReview.Movie =
                 await _context.Movies.FindAsync(
-                    criticReview.MovieId)
+                    existingReview.MovieId)
                 ?? new Movie();
 
             return View(criticReview);
         }
 
-        // Update only values the critic is allowed to change.
+        // Update only fields the critic is allowed to change.
         existingReview.Description =
             criticReview.Description;
 
         existingReview.Rating =
             criticReview.Rating;
 
-        // Publishing locks the review.
+        // Publishing permanently locks the review.
         if (submitAction == "publish")
         {
             existingReview.IsPublished = true;
@@ -255,7 +283,7 @@ public class CriticReviewsController : Controller
 
     // ==================== DELETE ====================
 
-    // GET: Display confirmation before deleting a draft.
+    // GET: Confirm deletion of a draft.
     public async Task<IActionResult> Delete(int id)
     {
         var userId = User.GetUserId();
@@ -305,13 +333,14 @@ public class CriticReviewsController : Controller
             return NotFound();
         }
 
-        // Published reviews are locked.
+        // Published reviews are permanently locked.
         if (criticReview.IsPublished)
         {
             return Forbid();
         }
 
-        _context.CriticReviews.Remove(criticReview);
+        _context.CriticReviews.Remove(
+            criticReview);
 
         await _context.SaveChangesAsync();
 

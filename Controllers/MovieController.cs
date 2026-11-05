@@ -30,7 +30,7 @@ public class MoviesController : Controller
     // Display all movies, newest release first.
     // Include Genre and AudienceRating so their titles
     // can be displayed in the Index view.
-    [AllowAnonymous]
+    
     public async Task<IActionResult> Index()
     {
         var movies = await _context.Movies

@@ -39,6 +39,7 @@ else
             @foreach (var review in Model)
             {
                 <tr>
+
                     <td>
                         @review.Movie.Title
                     </td>
@@ -71,6 +72,12 @@ else
                     </td>
 
                     <td>
+                        <a asp-action="Details"
+                           asp-route-id="@review.Id"
+                           class="btn btn-sm btn-info">
+                            Details
+                        </a>
+
                         @if (!review.IsPublished)
                         {
                             <a asp-action="Edit"
@@ -87,13 +94,20 @@ else
                         }
                         else
                         {
-                            <span class="text-muted">
+                            <span class="badge bg-dark">
                                 Locked
                             </span>
                         }
                     </td>
+
                 </tr>
             }
         </tbody>
     </table>
 }
+
+<a asp-controller="Movies"
+   asp-action="Index"
+   class="btn btn-secondary">
+    Back to Movies
+</a>

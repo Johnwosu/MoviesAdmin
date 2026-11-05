@@ -1,0 +1,89 @@
+@model MoviesAdmin.Models.CriticReview
+
+@{
+    ViewData["Title"] = "Review Details";
+}
+
+<h1>Review Details</h1>
+
+<hr />
+
+<dl class="row">
+
+    <!-- MOVIE -->
+    <dt class="col-sm-3">
+        Movie
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Movie.Title
+    </dd>
+
+    <!-- RATING -->
+    <dt class="col-sm-3">
+        Rating
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Rating / 5
+    </dd>
+
+    <!-- REVIEW -->
+    <dt class="col-sm-3">
+        Review
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Description
+    </dd>
+
+    <!-- STATUS -->
+    <dt class="col-sm-3">
+        Status
+    </dt>
+
+    <dd class="col-sm-9">
+
+        @if (Model.IsPublished)
+        {
+            <span class="badge bg-success">
+                Published
+            </span>
+        }
+        else
+        {
+            <span class="badge bg-secondary">
+                Draft
+            </span>
+        }
+
+    </dd>
+
+    <!-- CREATED DATE -->
+    <dt class="col-sm-3">
+        Created
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.CreatedDate.ToString("MMMM d, yyyy")
+    </dd>
+
+</dl>
+
+<div class="mt-4">
+
+    @if (!Model.IsPublished)
+    {
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning">
+            Edit
+        </a>
+    }
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back to My Reviews
+    </a>
+
+</div>
