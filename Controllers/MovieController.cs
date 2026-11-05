@@ -30,7 +30,7 @@ public class MoviesController : Controller
     // Display all movies, newest release first.
     // Include Genre and AudienceRating so their titles
     // can be displayed in the Index view.
-    
+    [Authorize(Roles = "Administrator,Critic")]
     public async Task<IActionResult> Index()
     {
         var movies = await _context.Movies
@@ -239,28 +239,45 @@ public class MoviesController : Controller
     }
 
 
-    // ==================== DETAILS ====================
+   // ==================== DETAILS ====================
 
-    // Display one movie including its related
-    // Genre and Audience Rating.
+// Display one movie including its related
+// Genre and Audience Rating.
+[Authorize(Roles = "Administrator,Critic")]
+public async Task<IActionResult> Details(int id)
+{
+    var movie = await _context.Movies
+        .Include(movie => movie.Genre)
+        .Include(movie => movie.AudienceRating)
+        .FirstOrDefaultAsync(
+            movie => movie.Id == id);
 
-    [AllowAnonymous]
-    public async Task<IActionResult> Details(int id)
+    if (movie == null)
     {
-        var movie = await _context.Movies
-            .Include(movie => movie.Genre)
-            .Include(movie => movie.AudienceRating)
-            .FirstOrDefaultAsync(
-                movie => movie.Id == id);
-
-        if (movie == null)
-        {
-            return NotFound();
-        }
-
-        return View(movie);
+        return NotFound();
     }
 
+    // Load only published critic reviews for this movie.
+    var publishedReviews =
+        await _context.CriticReviews
+            .Where(review =>
+                review.MovieId == id &&
+                review.IsPublished)
+            .OrderByDescending(
+                review => review.CreatedDate)
+            .ToListAsync();
+
+    // Pass the published reviews to the view using ViewBag.
+    ViewBag.PublishedReviews =
+        publishedReviews;
+
+    // Send the total number of published reviews
+    // to the Details view using ViewBag.
+    ViewBag.PublishedReviewCount =
+        publishedReviews.Count;
+
+    return View(movie);
+}
 
     // ==================== EDIT ====================
 

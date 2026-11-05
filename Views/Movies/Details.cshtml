@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "Movie Details";
+
+    var publishedReviews =
+        ViewBag.PublishedReviews
+        as List<MoviesAdmin.Models.CriticReview>
+        ?? new List<MoviesAdmin.Models.CriticReview>();
 }
 
 <h1>Movie Details</h1>
@@ -58,7 +63,7 @@
                 @Model.Genre.Title
             </dd>
 
-            <!-- RATING -->
+            <!-- CONTENT RATING -->
             <dt class="col-sm-3">
                 Content Rating
             </dt>
@@ -85,6 +90,45 @@
 
         </dl>
 
+
+        <!-- PUBLISHED REVIEWS -->
+        <hr />
+
+        <h3>
+            Published Reviews: @ViewBag.PublishedReviewCount
+        </h3>
+
+        @if (!publishedReviews.Any())
+        {
+            <p class="text-muted">
+                No published reviews yet.
+            </p>
+        }
+        else
+        {
+            @foreach (var review in publishedReviews)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            Rating: @review.Rating / 5
+                        </h5>
+
+                        <p class="card-text">
+                            @review.Description
+                        </p>
+
+                        <small class="text-muted">
+                            @review.CreatedDate.ToString("MMMM d, yyyy")
+                        </small>
+
+                    </div>
+                </div>
+            }
+        }
+
+
         <!-- BUTTONS -->
         <div class="mt-4">
 
@@ -98,7 +142,7 @@
                 </a>
             }
 
-            <!-- All authenticated users can return to the movie list. -->
+            <!-- Authenticated users can return to the movie list. -->
             <a asp-action="Index"
                class="btn btn-secondary">
                 Back to Movies

@@ -49,7 +49,9 @@ else
                         {
                             <img src="@movie.ImageUrl"
                                  alt="@movie.Title poster"
-                                 style="width: 150px; height: 110px; object-fit: contain;" />
+                                 style="width: 150px;
+                                        height: 110px;
+                                        object-fit: contain;" />
                         }
                         else
                         {
@@ -69,7 +71,7 @@ else
                         @movie.Genre.Title
                     </td>
 
-                    <!-- RATING -->
+                    <!-- CONTENT RATING -->
                     <td>
                         @movie.AudienceRating.Title
                     </td>
@@ -88,16 +90,15 @@ else
                     <!-- ACTIONS -->
                     <td>
 
-                        @* Everyone can view movie details. *@
-                        <a asp-action="Details"
-                           asp-route-id="@movie.Id"
-                           class="btn btn-sm btn-info">
-                            Details
-                        </a>
-
-                        @* Only administrators can edit or delete movies. *@
+                        @* Administrators can view and manage movie data. *@
                         @if (User.IsInRole("Administrator"))
                         {
+                            <a asp-action="Details"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-info">
+                                Details
+                            </a>
+
                             <a asp-action="Edit"
                                asp-route-id="@movie.Id"
                                class="btn btn-sm btn-warning">
@@ -111,10 +112,15 @@ else
                             </a>
                         }
 
-                        @* Anonymous users and Critics can see the Review button. *@
-                        @if (!(User.Identity?.IsAuthenticated ?? false) ||
-                             User.IsInRole("Critic"))
+                        @* Critics can view movies and create reviews. *@
+                        @if (User.IsInRole("Critic"))
                         {
+                            <a asp-action="Details"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-info">
+                                Details
+                            </a>
+
                             <a asp-controller="CriticReviews"
                                asp-action="Create"
                                asp-route-movieId="@movie.Id"
