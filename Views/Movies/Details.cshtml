@@ -16,14 +16,17 @@
 <div class="row">
 
     <!-- MOVIE IMAGE -->
-    <div class="col-md-4 mb-4">
+    <div class="col-md-5 mb-4">
 
         @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
         {
             <img src="@Model.ImageUrl"
                  alt="@Model.Title poster"
-                 class="img-fluid rounded"
-                 style="max-height: 450px; object-fit: contain;" />
+                 class="img-fluid rounded shadow-sm"
+                 style="width: 100%;
+                 max-width: 350px; 
+                 max-height: 550px; 
+                 object-fit: contain;" />
         }
         else
         {
@@ -35,7 +38,7 @@
     </div>
 
     <!-- MOVIE INFORMATION -->
-    <div class="col-md-8">
+    <div class="col-md-7">
 
         <dl class="row">
 
