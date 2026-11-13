@@ -239,7 +239,7 @@ public class MoviesController : Controller
     }
 
 
-   // ==================== DETAILS ====================
+ // ==================== DETAILS ====================
 
 // Display one movie including its related
 // Genre and Audience Rating.
@@ -267,9 +267,31 @@ public async Task<IActionResult> Details(int id)
                 review => review.CreatedDate)
             .ToListAsync();
 
+    // Get the Auth0 user IDs of the critics
+    // who wrote the published reviews.
+    var reviewerIds =
+        publishedReviews
+            .Select(review => review.CreatedBy)
+            .Distinct()
+            .ToList();
+
+    // Match the Auth0 user IDs with names
+    // stored in the UserSnapshots table.
+    var reviewerNames =
+        await _context.UserSnapshot
+            .Where(user =>
+                reviewerIds.Contains(user.UserId))
+            .ToDictionaryAsync(
+                user => user.UserId,
+                user => user.Name);
+
     // Pass the published reviews to the view using ViewBag.
     ViewBag.PublishedReviews =
         publishedReviews;
+
+    // Pass the reviewer names to the view using ViewBag.
+    ViewBag.ReviewerNames =
+        reviewerNames;
 
     // Send the total number of published reviews
     // to the Details view using ViewBag.

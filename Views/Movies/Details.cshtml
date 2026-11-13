@@ -7,6 +7,11 @@
         ViewBag.PublishedReviews
         as List<MoviesAdmin.Models.CriticReview>
         ?? new List<MoviesAdmin.Models.CriticReview>();
+
+    var reviewerNames =
+        ViewBag.ReviewerNames
+        as Dictionary<string, string>
+        ?? new Dictionary<string, string>();
 }
 
 <h1>Movie Details</h1>
@@ -24,9 +29,9 @@
                  alt="@Model.Title poster"
                  class="img-fluid rounded shadow-sm"
                  style="width: 100%;
-                 max-width: 350px; 
-                 max-height: 550px; 
-                 object-fit: contain;" />
+                        max-width: 350px;
+                        max-height: 550px;
+                        object-fit: contain;" />
         }
         else
         {
@@ -111,17 +116,35 @@
         {
             @foreach (var review in publishedReviews)
             {
+                var reviewerName =
+                    reviewerNames.TryGetValue(
+                        review.CreatedBy,
+                        out var name)
+                    && !string.IsNullOrWhiteSpace(name)
+                        ? name
+                        : "Critic";
+
                 <div class="card mb-3">
                     <div class="card-body">
 
-                        <h5 class="card-title">
-                            Rating: @review.Rating / 5
+                        <!-- REVIEWER -->
+                        <h5 class="card-title mb-1">
+                            @reviewerName
                         </h5>
 
+                        <!-- RATING -->
+                        <div class="mb-2">
+                            <strong>
+                                Rating: @review.Rating / 5
+                            </strong>
+                        </div>
+
+                        <!-- REVIEW -->
                         <p class="card-text">
                             @review.Description
                         </p>
 
+                        <!-- REVIEW DATE -->
                         <small class="text-muted">
                             @review.CreatedDate.ToString("MMMM d, yyyy")
                         </small>

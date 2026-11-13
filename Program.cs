@@ -5,6 +5,8 @@ using MoviesAdmin.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,51 @@ builder.Services
 
         options.ClientSecret =
             builder.Configuration["Auth0:ClientSecret"]!;
+
+        // Request the user's identity,
+        // profile information and email.
+        options.Scope =
+            "openid profile email";
+
+        options.OpenIdConnectEvents =
+            new OpenIdConnectEvents
+            {
+                OnTokenValidated =
+                    async context =>
+                    {
+                        var principal =
+                            context.Principal!;
+
+                        var userId =
+                            principal.FindFirst(
+                                ClaimTypes.NameIdentifier)
+                            ?.Value;
+
+                        var email =
+                            principal.FindFirst(
+                                ClaimTypes.Email)
+                            ?.Value;
+
+                        var name =
+                            principal.Identity?.Name;
+
+                        if (string.IsNullOrEmpty(userId))
+                        {
+                            return;
+                        }
+
+                        var syncService =
+                            context.HttpContext
+                                .RequestServices
+                                .GetRequiredService<
+                                    IUserSnapshotService>();
+
+                        await syncService.AddUserAsync(
+                            userId,
+                            email ?? string.Empty,
+                            name ?? string.Empty);
+                    }
+            };
     });
 
 // Configure Auth0 role claims.
@@ -54,6 +101,11 @@ builder.Services.AddDbContext<MoviesAdminContext>(options =>
 
 // Register Azure Blob Storage service.
 builder.Services.AddScoped<IAzureBlobService, AzureBlobService>();
+
+// Register the UserSnapshotService for dependency injection.
+builder.Services.AddScoped<
+    IUserSnapshotService, 
+    UserSnapshotService>();
 
 var app = builder.Build();
 

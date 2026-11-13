@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MoviesAdmin.Models;
 
+
 namespace MoviesAdmin.Data;
 
 public class MoviesAdminContext : DbContext
@@ -22,4 +23,7 @@ public class MoviesAdminContext : DbContext
 
     // Represents the CriticReviews table.
     public DbSet<CriticReview> CriticReviews { get; set; } = default!;
+
+    // Represents the Users table.
+    public DbSet<UserSnapshot> UserSnapshot { get; set; } = default!;
 }
