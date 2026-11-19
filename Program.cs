@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,9 @@ builder.Services
 
         options.ClientSecret =
             builder.Configuration["Auth0:ClientSecret"]!;
+
+        options.ResponseType =
+            OpenIdConnectResponseType.Code;
 
         // Request the user's identity,
         // profile information and email.
@@ -77,6 +81,10 @@ builder.Services.Configure<OpenIdConnectOptions>(
     Auth0Constants.AuthenticationScheme,
     options =>
     {
+        // Use query response mode instead of form_post//
+        options.ResponseMode = 
+            OpenIdConnectResponseMode.Query;
+
         options.TokenValidationParameters =
             new TokenValidationParameters
             {
