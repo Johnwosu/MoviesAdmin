@@ -27,6 +27,8 @@ builder.Services
         options.ClientSecret =
             builder.Configuration["Auth0:ClientSecret"]!;
 
+        options.CallbackPath = "/callback";
+
         options.ResponseType =
             OpenIdConnectResponseType.Code;
 
@@ -81,7 +83,7 @@ builder.Services.Configure<OpenIdConnectOptions>(
     Auth0Constants.AuthenticationScheme,
     options =>
     {
-        // Use query response mode instead of form_post//
+        // Use query response mode instead of form_post.
         options.ResponseMode = 
             OpenIdConnectResponseMode.Query;
 
