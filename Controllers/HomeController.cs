@@ -21,6 +21,7 @@ public class HomeController : Controller
     }
 
     // Display the error page.
+    [AllowAnonymous]
     [ResponseCache(
         Duration = 0,
         Location = ResponseCacheLocation.None,
